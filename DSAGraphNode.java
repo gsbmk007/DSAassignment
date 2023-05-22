@@ -1,20 +1,20 @@
 public class DSAGraphNode {
     private String label;
     private Object value;
-    private DSALinkedList links;
+    private DSALinkedListNode links;
     private boolean visited;
 
     public DSAGraphNode(String inLabel) {
         this.label = inLabel;
         this.value = null;
-        this.links = new DSALinkedList();
+        this.links = new DSALinkedListNode();
         this.visited = false;
     }
 
     public DSAGraphNode(String inLabel, Object inValue) {
         this.label = inLabel;
         this.value = inValue;
-        this.links = new DSALinkedList();
+        this.links = new DSALinkedListNode();
         this.visited = false;
     }
 
@@ -22,11 +22,16 @@ public class DSAGraphNode {
         return this.label;
     }
 
+    public void setValue(Object input) {
+
+        this.value = input;
+    }
+
     public Object getValue() {
         return this.value;
     }
 
-    public DSALinkedList getAdjacent() {
+    public DSALinkedListNode getAdjacent() {
         return this.links;
     }
 

@@ -1,13 +1,13 @@
 import java.io.Serializable;
 import java.util.Iterator;
 
-public class DSALinkedList implements Serializable, Iterable<DSAGraphNode> {
+public class DSALinkedListNode implements Serializable, Iterable<DSAGraphNode> {
 
     private DSAListNode head;
     private DSAListNode tail;
     private int count;
 
-    public DSALinkedList() {
+    public DSALinkedListNode() {
         this.head = null;
         this.tail = null;
         this.count = 0;
@@ -111,38 +111,34 @@ public class DSALinkedList implements Serializable, Iterable<DSAGraphNode> {
         return this.count;
     }
 
-    @Override
-    public Iterator<DSAGraphNode> iterator() {
-        return new DSALinkedListIterator(this.head);
-    }
+    public Iterator iterator() {
+        return new DSALinkedListNodeIterator(this);
 
-    private class DSALinkedListIterator implements Iterator<DSAGraphNode> {
-
-        private DSAListNode current;
-
-        public DSALinkedListIterator(DSAListNode head) {
-            this.current = head;
+}
+    private class DSALinkedListNodeIterator implements Iterator{
+        private DSAListNode iterNext;
+        public DSALinkedListNodeIterator(DSALinkedListNode theList){
+            iterNext=theList.head;
         }
 
-        @Override
-        public boolean hasNext() {
-            return (current != null);
-        }
+        public boolean hasNext() { return (iterNext != null); }
 
-        @Override
-        public DSAGraphNode next() {
-            if (!hasNext()) {
-                throw new IllegalStateException("List Empty");
-            } else {
-                DSAGraphNode value = current.getValue();
-                current = current.getNext();
-                return value;
+        public Object next() {
+            Object value;
+            if(iterNext==null){
+                value=null;
+            }else{
+value=iterNext.getValue();
+iterNext=iterNext.getNext();
+
+
             }
+            return value;
         }
 
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
+        public void remove(){
+            throw new UnsupportedOperationException("Not Supported");
         }
-    }
+
+    } 
 }

@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.Iterator;
 
-public class DSALinkedListEdge implements Serializable, Iterable<DSAGraphEdge> {
+public class DSALinkedListEdge implements Serializable, Iterable {
 
     private DSAListEdge head;
     private DSAListEdge tail;
@@ -112,37 +112,34 @@ public class DSALinkedListEdge implements Serializable, Iterable<DSAGraphEdge> {
     }
 
     @Override
-    public Iterator<DSAGraphEdge> iterator() {
-        return new DSALinkedListIterator(this.head);
+    public Iterator iterator() {
+            return new DSALinkedListEdgeIterator(this);
+    
     }
+        private class DSALinkedListEdgeIterator implements Iterator{
+            private DSAListEdge iterNext;
+            public DSALinkedListEdgeIterator(DSALinkedListEdge theList){
+                iterNext=theList.head;
+            }
 
-    private class DSALinkedListIterator implements Iterator<DSAGraphEdge> {
+            public boolean hasNext() { return (iterNext != null); }
 
-        private DSAListEdge current;
+            public Object next() {
+                Object value;
+                if(iterNext==null){
+                    value=null;
+                }else{
+value=iterNext.getValue();
+iterNext=iterNext.getNext();
 
-        public DSALinkedListIterator(DSAListEdge head) {
-            this.current = head;
-        }
 
-        @Override
-        public boolean hasNext() {
-            return (current != null);
-        }
-
-        @Override
-        public DSAGraphEdge next() {
-            if (!hasNext()) {
-                throw new IllegalStateException("List Empty");
-            } else {
-                DSAGraphEdge value = current.getValue();
-                current = current.getNext();
+                }
                 return value;
             }
-        }
 
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
+            public void remove(){
+                throw new UnsupportedOperationException("Not Supported");
+            }
+
+        }    
 }

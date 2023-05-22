@@ -7,10 +7,13 @@ public class TestHarness {
         DSAGraph graph = new DSAGraph();
 
         try {
-            String csvFile = "location.txt";
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            String line;
+            String locationData = "location.txt";
 
+            String UAVdata="UAVdata.txt";
+            BufferedReader br = new BufferedReader(new FileReader(locationData));
+           
+            String line;
+ 
             // Read the CSV file line by line
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(" ");
@@ -28,6 +31,7 @@ public class TestHarness {
                 }
             }
             graph.displayAsMatrix();
+            System.out.println("rint edges ");
             graph.printEdges();
             graph.displayAsList();
             System.out.print("DFS Traversal: ");
@@ -35,7 +39,23 @@ public class TestHarness {
             graph.depthFirstSearch(graph.getNode("A"));
             System.out.println();
             graph.breadthFirstSearch("A");
-           
+            System.out.println(graph.getvalue("A"));
+
+            BufferedReader UAVdataReader= new BufferedReader(new FileReader(UAVdata));
+            String Data;
+
+            while ((Data=UAVdataReader.readLine())!=null){
+                String[] values = Data.split(" ");
+                // System.out.println(values[0]+" "+values[1]+" "+values[2]+" "+values[3]);
+                naturalElements data = new naturalElements(Integer .parseInt(values[1]),Integer.parseInt(values[2]),Integer.parseInt(values[3]));
+                graph.getNode(values[0]).setValue(data);
+                // System.out.println(data.toString());
+
+               data=(naturalElements)graph.getNode(values[0]).getValue();
+               System.out.println(data.toString());
+            }
+
+                System.out.println("F "+graph.getNode("F").getValue().toString());
             br.close();
         } catch (IOException e) {
             e.printStackTrace();

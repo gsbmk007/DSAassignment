@@ -1,13 +1,12 @@
 import java.util.Iterator;
 
 public class DSAGraph {
-    private DSALinkedList vertices;
+    private DSALinkedListNode vertices;
     private DSALinkedListEdge edges;
 
-
     public DSAGraph() {
-        this.vertices = new DSALinkedList();
-        this.edges= new DSALinkedListEdge();
+        this.vertices = new DSALinkedListNode();
+        this.edges = new DSALinkedListEdge();
     }
 
     public void addNode(String label) throws Exception {
@@ -19,6 +18,7 @@ public class DSAGraph {
     }
 
     public void addNode(String label, Object value) throws Exception {
+
         DSAGraphNode node = new DSAGraphNode(label, value);
         vertices.insertLast(node);
         System.out.println("Added Node " + label);
@@ -56,6 +56,7 @@ public class DSAGraph {
     }
 
     public DSAGraphNode getNode(String label) {
+        // System.out.println("Getting"+label);
         Iterator<DSAGraphNode> iter = vertices.iterator();
         while (iter.hasNext()) {
             DSAGraphNode node = (DSAGraphNode) iter.next();
@@ -66,7 +67,7 @@ public class DSAGraph {
         return null;
     }
 
-    public DSALinkedList getAdjacent(String label) {
+    public DSALinkedListNode getAdjacent(String label) {
         DSAGraphNode node = getNode(label);
         if (node != null) {
             return node.getAdjacent();
@@ -75,7 +76,7 @@ public class DSAGraph {
     }
 
     public boolean isAdjacent(String label1, String label2) {
-        DSALinkedList adjacent = getAdjacent(label1);
+        DSALinkedListNode adjacent = getAdjacent(label1);
         if (adjacent != null) {
             Iterator<DSAGraphNode> iter = adjacent.iterator();
             while (iter.hasNext()) {
@@ -107,7 +108,7 @@ public class DSAGraph {
             DSAGraphNode node = (DSAGraphNode) iter.next();
             System.out.print(node.getLabel() + ": ");
 
-            DSALinkedList adjacent = node.getAdjacent();
+            DSALinkedListNode adjacent = node.getAdjacent();
             Iterator<DSAGraphNode> adjIter = adjacent.iterator();
             while (adjIter.hasNext()) {
                 DSAGraphNode adjNode = (DSAGraphNode) adjIter.next();
@@ -123,7 +124,7 @@ public class DSAGraph {
     public void displayAsMatrix() {
         int n = getNodeCount();
         String[][] matrix = new String[n + 1][n + 1]; // Increase the matrix size by 1
-    
+
         Iterator<DSAGraphNode> iter = vertices.iterator();
         int i = 1; // Start from index 1 instead of 0
         while (iter.hasNext()) {
@@ -133,11 +134,11 @@ public class DSAGraph {
             matrix[0][i] = node.getLabel(); // Assign label to the first row
             i++;
         }
-    
+
         iter = vertices.iterator();
         while (iter.hasNext()) {
             DSAGraphNode node = iter.next();
-            DSALinkedList adjacent = node.getAdjacent();
+            DSALinkedListNode adjacent = node.getAdjacent();
             Iterator<DSAGraphNode> adjIter = adjacent.iterator();
             while (adjIter.hasNext()) {
                 DSAGraphNode adjNode = adjIter.next();
@@ -146,7 +147,7 @@ public class DSAGraph {
                 matrix[row][col] = "1";
             }
         }
-    
+
         for (int row = 0; row <= n; row++) { // Include the first row
             for (int col = 0; col <= n; col++) { // Include the first column
                 System.out.print((matrix[row][col] == null ? "0" : matrix[row][col]) + " ");
@@ -154,15 +155,15 @@ public class DSAGraph {
             System.out.println();
         }
     }
-    
+
     public void depthFirstSearch(DSAGraphNode startNode) {
         if (startNode == null) {
             return;
         }
-        
+
         startNode.setVisited();
         System.out.print(startNode.getLabel() + "->");
-        DSALinkedList adjacent = startNode.getAdjacent();
+        DSALinkedListNode adjacent = startNode.getAdjacent();
         Iterator<DSAGraphNode> iter = adjacent.iterator();
         while (iter.hasNext()) {
             DSAGraphNode adjNode = (DSAGraphNode) iter.next();
@@ -172,13 +173,13 @@ public class DSAGraph {
         }
     }
 
-
-    // Test code 
+    // Test code
     public void printEdges() {
-        Iterator<DSAGraphEdge> iter = edges.iterator();
+        DSAGraphEdge c;
+        Iterator iter = edges.iterator();
         while (iter.hasNext()) {
-            DSAGraphEdge edge = iter.next();
-            System.out.println("Edge: " + edge.toString());
+            c = (DSAGraphEdge) iter.next();
+            System.out.println("Edge: " + c.toString());
         }
     }
 
@@ -205,7 +206,7 @@ public class DSAGraph {
             DSAGraphNode currentNode = queue[front++];
             System.out.print(currentNode.getLabel() + "->");
 
-            DSALinkedList adjacent = currentNode.getAdjacent();
+            DSALinkedListNode adjacent = currentNode.getAdjacent();
             if (adjacent != null) {
                 Iterator<DSAGraphNode> iter = adjacent.iterator();
                 while (iter.hasNext()) {
@@ -228,44 +229,16 @@ public class DSAGraph {
         System.out.println();
     }
 
-//   public void breadthFirstSearch(String startNodeLabel) {
-//         DSAGraphNode startNode = graph.getNode(startNodeLabel);
-//         if (startNode == null) {
-//             System.out.println("Start node not found.");
-//             return;
-//         }
+    public Object getvalue(String nodelable) {
+        Object value = this.getNode(nodelable).getValue();
 
-//         // Create a queue to store visited nodes
-//         DSALinkedListQueue queue = new DSALinkedListQueue();
+        return value;
+    }
 
-//         // Mark the start node as visited and enqueue it
-//         startNode.setVisited();
-//         queue.enqueue(startNode);
+  
 
-//         System.out.print("BFS Traversal: ");
-
-//         while (!queue.isEmpty()) {
-//             DSAGraphNode currentNode = (DSAGraphNode) queue.dequeue();
-//             System.out.print(currentNode.getLabel() + " ");
-
-//             // Get the adjacent nodes of the current node
-//             DSALinkedList adjacent = graph.getAdjacent(currentNode.getLabel());
-//             if (adjacent != null) {
-//                 // Iterate through the adjacent nodes
-//                 Iterator<DSAGraphNode> iter = adjacent.iterator();
-//                 while (iter.hasNext()) {
-//                     DSAGraphNode adjNode = iter.next();
-//                     if (!adjNode.getVisited()) {
-//                         // Mark the adjacent node as visited and enqueue it
-//                         adjNode.setVisited();
-//                         queue.enqueue(adjNode);
-//                     }
-//                 }
-//             }
-//         }
-
-//         System.out.println();
-//     }
-
+    public String getShortestPath() {
+        return "2";
+    }
 
 }
