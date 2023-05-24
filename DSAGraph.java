@@ -5,8 +5,6 @@ import javax.swing.text.html.parser.Element;
 
 import java.lang.String;
 
-
-
 public class DSAGraph {
     private DSALinkedListNode vertices;
     private DSALinkedListEdge edges;
@@ -21,7 +19,7 @@ public class DSAGraph {
             insertNode(label, null);
             return true;
         } else {
-            System.out.println("Node " + label + " already exists.");
+            // System.out.println("Node " + label + " already exists.");
             return false;
         }
     }
@@ -43,7 +41,6 @@ public class DSAGraph {
             node2.addEdge(node1);
             edges.insertFirst(edge);
         }
-        
 
     }
 
@@ -166,7 +163,7 @@ public class DSAGraph {
         }
     }
 
-    public void depthFirstSearch(String start,DSAShufflingQueue queue) throws Exception {
+    public void depthFirstSearch(String start, DSAShufflingQueue queue) throws Exception {
         DSAGraphNode startNode = this.getNode(start);
 
         if (startNode == null) {
@@ -180,7 +177,7 @@ public class DSAGraph {
         while (iter.hasNext()) {
             DSAGraphNode adjNode = (DSAGraphNode) iter.next();
             if (!adjNode.getVisited()) {
-                depthFirstSearch(adjNode.getLabel(),queue);
+                depthFirstSearch(adjNode.getLabel(), queue);
             }
         }
     }
@@ -195,11 +192,11 @@ public class DSAGraph {
         }
     }
 
-    public String breadthFirstSearch(String startNodeLabel,DSAShufflingQueue Queue) throws Exception {
+    public String breadthFirstSearch(String startNodeLabel, DSAShufflingQueue Queue) throws Exception {
         DSAGraphNode startNode = getNode(startNodeLabel);
-        String str="";
+        String str = "";
         if (startNode == null) {
-            str="Start node not found.";
+            str = "Start node not found.";
             return str;
         }
 
@@ -217,8 +214,8 @@ public class DSAGraph {
 
         while (front != rear) {
             DSAGraphNode currentNode = queue[front++];
-           str+=""+currentNode.getLabel() + "->";
-           Queue.enqueue(currentNode);
+            str += "" + currentNode.getLabel() + "->";
+            Queue.enqueue(currentNode);
 
             DSALinkedListNode adjacent = currentNode.getAdjacent();
             if (adjacent != null) {
@@ -241,42 +238,39 @@ public class DSAGraph {
         }
         return str;
 
-     }
+    }
 
-   public Object getvalue(String nodelable) {
+    public Object getvalue(String nodelable) {
         Object value = this.getNode(nodelable).getValue();
 
         return value;
     }
 
-  
-
-
-    public DSAShufflingQueue getShortestPath(String start, String end,DSAShufflingQueue Queue) throws Exception {
-        breadthFirstSearch(start,Queue);
-        boolean reached=false;
-        DSAGraphNode inQueue= new DSAGraphNode(null);
-        DSAShufflingQueue path= new DSAShufflingQueue();
+    public DSAShufflingQueue getShortestPath(String start, String end, DSAShufflingQueue Queue) throws Exception {
+        breadthFirstSearch(start, Queue);
+        boolean reached = false;
+        DSAGraphNode inQueue = new DSAGraphNode(null);
+        DSAShufflingQueue path = new DSAShufflingQueue();
         System.out.print("Shortest Path: ");
-        while(!reached){
-            inQueue=(DSAGraphNode)Queue.dequeue();
+        while (!reached) {
+            inQueue = (DSAGraphNode) Queue.dequeue();
 
-            System.out.print("->"+inQueue.getLabel());
+            System.out.print("->" + inQueue.getLabel());
 
             path.enqueue(inQueue);
             if (inQueue.getLabel().equals(end))
-            reached=true;
+                reached = true;
 
-
-
-
- 
- 
         }
         System.out.println();
         return path;
 
-        
- 
-     }
+    }
+
+    public void removeNode(String value) throws Exception {
+        vertices.removeNode(getNode(value));
+
+
+    }
+
 }

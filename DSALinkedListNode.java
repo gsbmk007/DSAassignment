@@ -107,6 +107,38 @@ public class DSALinkedListNode implements Serializable, Iterable<DSAGraphNode> {
         return Value;
     }
 
+    public void removeNode(DSAGraphNode value) throws Exception {
+        if (isEmpty()) {
+            throw new IllegalStateException("List Empty");
+        }
+    
+        if (head.getValue().equals(value)) {
+            head = head.getNext();
+            count--;
+            return;
+        }
+    
+        DSAListNode currentNode = head;
+        DSAListNode prevNode = null;
+    
+        while (currentNode != null && !currentNode.getValue().equals(value)) {
+            prevNode = currentNode;
+            currentNode = currentNode.getNext();
+        }
+    
+        if (currentNode == null) {
+            throw new IllegalArgumentException("Node not found");
+        }
+    
+        prevNode.setNext(currentNode.getNext());
+    
+        if (currentNode.getNext() == null) {
+            tail = prevNode;
+        }
+    
+        count--;
+    }
+ 
     public int getCount() {
         return this.count;
     }
@@ -135,10 +167,7 @@ iterNext=iterNext.getNext();
             }
             return value;
         }
-
-        public void remove(){
-            throw new UnsupportedOperationException("Not Supported");
-        }
+   
 
     } 
 }
