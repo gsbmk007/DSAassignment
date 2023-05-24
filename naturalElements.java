@@ -52,6 +52,6 @@ public class naturalElements {
     }
 
     public String toString() {
-        return "Temperature: " + this.temperature + " Humidity: " + this.humidity + " Windspeed: " + this.windSpeed;
+        return "Location: "+this.label+" Temperature: " + this.temperature + " Humidity: " + this.humidity + " Windspeed: " + this.windSpeed;
     }
 }
