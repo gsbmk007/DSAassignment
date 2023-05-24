@@ -25,11 +25,14 @@ public class DSAGraphNode {
     public void setValue(Object input) {
 
         this.value = input;
+        // System.out.println("Done");
+        // System.out.println((String)value);
+        
     }
 
     public Object getValue() {
         return this.value;
-    }
+    } 
 
     public DSALinkedListNode getAdjacent() {
         return this.links;
