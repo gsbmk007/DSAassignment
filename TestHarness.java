@@ -15,6 +15,11 @@ public class TestHarness {
         DSAGraphNode currentNode = new DSAGraphNode(null);
         DSAHashTable hashTable = new DSAHashTable(1000);
         String os = System.getProperty("os.name");
+        DSAHeap heap = new DSAHeap(1000); // No need to specify initial size
+        // Object [][]array=new Object[11][2];
+        // int i=0;
+
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -28,7 +33,7 @@ public class TestHarness {
 
             String line;
             int lineCount = (int) Files.lines(filePath).count();
-            naturalElements[] elements = new naturalElements[lineCount];
+            naturalElements[] elements = new naturalElements[100];
 
             lineCount = 0;
             // Read the CSV file line by line
@@ -53,7 +58,7 @@ public class TestHarness {
             // graph.displayAsMatrix();
             // System.out.println("Print edges:");
             // graph.printEdges();
-            System.out.println(" Prints the graph as list ");
+            System.out.println("\nTASK 1:\n Printing the Graph as Adjacency List \n\n");
             graph.displayAsList();
 
             // System.out.println("DFS:");
@@ -82,40 +87,49 @@ public class TestHarness {
                 // Set the data as the value of the corresponding graph node
                 graph.getNode(values[0]).setValue(data);
 
+                    heap.add(data.riskInteger(), data);
                 hashTable.put(values[0], data);
-                System.out.println("   " + hashTable.get(values[0]).toString());
+                // array[i][0]=data.riskInteger();
+                // i++;
+                // array[i][1]=data;
+                // System.out.println("   " + hashTable.get(values[0]).toString());
                 elements[lineCount] = data;
                 lineCount++;
             }
 
+            // i=0;
+     
+            
             UAVdataReader.close();
             String node;
-            System.out.println("Getting edges");
-            graph.getEdge();
-            System.out.println(hashTable.get("A"));
-            System.out.println("Getting sp");
+            // System.out.println("Getting edges");
+            // graph.getEdge();
+            // System.out.println(hashTable.get("A"));
+            // System.out.println("Getting sp");
             DSAStack stack = new DSAStack();
+            // System.out.println(graph.getNode("A").getValue().toString());
 
-            stack=graph.shortestPathBFS("A", "I");
+            // stack.display();
 
-                // stack.display();
+            // System.out.println("done dequing ");
+      
+            // System.out.println("added Data to heap");
 
-          
-       
-            System.out.println("done dequing ");
 
-            while(!stack.isEmpty()){
-            System.out.println( stack.pop().toString());
-            }
+
             while (true) {
 
-                System.out.println("Choose Option with number");
-                System.out.println("\nTask 2\n1.Find shortest path Between Nodes\n");
+                System.out.println("\nChoose Option with number");
+                System.out.println("\nTask 2\n1.Find shortest path Between Nodes using BFS\n");
+                System.out.println("9. See Output of DFS");
 
                 System.out.println("Task3\n\n2.Insert node");
                 System.out.println("3.Delete Node ");
                 System.out.println("4.Find Node stats from array");
                 System.out.println("5.Find Node stats with Hashing");
+                System.out.println("6. Display Heap in order of Low-High risk places");
+                System.out.println("7. Itenary");
+
 
                 int option = scanner.nextInt();
                 switch (option) {
@@ -123,13 +137,62 @@ public class TestHarness {
                         System.out.println("Enter Node to add");
                         node = scanner.next();
                         System.out.println("Enter Value for node " + node);
-                        System.out.print("Value: ");
-                        Object value = scanner.next();
+                        if (!graph.hasNode(node)) {
 
-                        if (graph.addNode(node)) {
-                            System.out.println("Node Added Successfully ");
-                            graph.getNode(node).setValue(value);
+                            System.out.println("Enter Values for");
+                            System.out.println("Temperature: ");
+                            int temperature = scanner.nextInt();
 
+                            boolean valueok=false;
+                            if(temperature>=25&&temperature<=48)
+                                valueok=true;
+
+                            while(!valueok){
+                            System.out.println("Enter a Valid Temp between 25-48");
+                             temperature = scanner.nextInt();
+                             if(temperature>=25&&temperature<=48)
+                                valueok=true;
+
+                            }
+
+                            valueok=false;
+                            System.out.println("Humidity: ");
+                            int Humidity = scanner.nextInt();
+                            if(Humidity>=15&&Humidity<=60)
+                            valueok=true;
+                            while(!valueok){
+                                System.out.println("Enter a Valid Humidity between 15-60");
+                                Humidity = scanner.nextInt();
+                                 if(Humidity>=15&&Humidity<=60)
+                                    valueok=true;
+    
+                                }
+                                valueok=false;
+                            System.out.println("WindSpeed: ");
+                            int WindSpeed = scanner.nextInt();
+                            if(WindSpeed>=30&&WindSpeed<=100)
+                            valueok=true;
+                            while(!valueok){
+                                System.out.println("Enter a Valid WindSpeed between 30-100");
+                                WindSpeed = scanner.nextInt();
+                                 if(WindSpeed>=30&&WindSpeed<=100)
+                                    valueok=true;
+    
+                                }
+                            naturalElements value = new naturalElements(node, temperature, Humidity, WindSpeed);
+
+                            if (graph.addNode(node)) {
+                                System.out.println("Node Added Successfully ");
+                                graph.getNode(node).setValue(value);
+                                hashTable.put(node, value);
+                                heap.add(value.riskInteger(), value);
+                                elements[lineCount]=value;
+                                lineCount++;
+                            }
+                            graph.displayAsList();
+                            // hash
+                        } else {
+                            System.out.println("Enter a node that does not exist ");
                         }
 
                         break;
@@ -153,21 +216,15 @@ public class TestHarness {
                         // Find the shortest path from node A to node F usin2g DFS
                         try {
                             if (graph.getNode(node) != null) {
-                                // path = graph.getShortestPath(node, end, DFSqueue);
+                                stack = graph.shortestPathBFS(node, end);
 
-                                boolean reached = false;
+                                while (!stack.isEmpty()) {
 
-                                while (!reached) {
-                                    currentNode = (DSAGraphNode) path.dequeue();
-
-                                    System.out.println("Location: " + currentNode.getLabel() + ": "
-                                            + ((naturalElements) currentNode.getValue()).toString());
-
-                                    path.enqueue(currentNode);
-
-                                    if (currentNode.getLabel().equals(end))
-                                        reached = true;
+                                    String nodename = (stack.pop().toString());
+                                    // System.out.print(nodename+"->");
+                                    System.out.println(hashTable.get(nodename));
                                 }
+
                             } else {
                                 System.out.println("Cannot find " + node + "Try again ");
                             }
@@ -188,7 +245,13 @@ public class TestHarness {
                         }
                         System.out.println("Deleting node " + node);
                         graph.removeNode(node);
-                        System.out.println("Deleted node:L " + node);
+                        hashTable.remove(node);
+                        System.out.println("Deleted node: " + node);
+                        try {
+                            hashTable.get(node).toString();
+                        } catch (Exception e) {
+    
+                        }
                         break;
                     case 4:
                         System.out.println("Enter the Node to Be Found  ");
@@ -224,6 +287,25 @@ public class TestHarness {
                         System.out.println("Time Taken to find node using Hash : " + elapsedTime);
 
                         // test code
+                        break;
+                    case 6:
+                        System.out.println("Display heal");
+                        Object[][] input = new Object[heap.getCount()][2];
+
+
+                        for (int i = 0; i < heap.getCount(); i++) {
+                            input[i][0] = heap.heap[i].priority;
+                            input[i][1] = heap.heap[i].value;
+                        }
+                        DSAHeap.DSAHeapEntry[] sortesdArray = heap.heapSort(input);
+                        for (DSAHeap.DSAHeapEntry entry : sortesdArray) {
+                            naturalElements element = (naturalElements) entry.value;
+                            System.out.println(element.toString());
+                        }
+                        break;
+
+                    case 7:
+                        System.out.println("Itenary ");
                     default:
                         break;
                 }

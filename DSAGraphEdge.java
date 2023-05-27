@@ -2,9 +2,9 @@ public class DSAGraphEdge {
     private DSAGraphNode from;
     private DSAGraphNode to;
     private String label;
-    private Object value;
+    private Double value;
 
-    public DSAGraphEdge(DSAGraphNode fromVertex, DSAGraphNode toVertex, String inLabel, Object inValue) {
+    public DSAGraphEdge(DSAGraphNode fromVertex, DSAGraphNode toVertex, String inLabel, Double inValue) {
         from = fromVertex;
         to = toVertex;
         label = inLabel;
@@ -15,7 +15,8 @@ public class DSAGraphEdge {
         return label;
     }
 
-    public Object getValue() {
+
+    public Double getValue() {
         return value;
     }
 

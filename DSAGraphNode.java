@@ -1,47 +1,61 @@
 public class DSAGraphNode {
     private String label;
-    private Object value;
+    private naturalElements value;
     private DSALinkedListNode links;
     private boolean visited;
     private DSAGraphNode previous;
+    private int distance;
 
     public DSAGraphNode(String inLabel) {
         this.label = inLabel;
-        this.value = null;
+        this.value = new naturalElements();
         this.links = new DSALinkedListNode();
         this.visited = false;
+        this.distance = 0;
     }
 
-    public DSAGraphNode(String inLabel, Object inValue) {
+    public DSAGraphNode(String inLabel, naturalElements inValue) {
         this.label = inLabel;
         this.value = inValue;
         this.links = new DSALinkedListNode();
         this.visited = false;
+        this.distance = 0;
+
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public String getLabel() {
         return this.label;
     }
 
-    public void setValue(Object input) {
+    public void setValue(naturalElements input) {
 
         this.value = input;
         // System.out.println("Done");
         // System.out.println((String)value);
-        
+
     }
 
-    public void setPrevious(DSAGraphNode a){
+    public void setPrevious(DSAGraphNode a) {
 
-        this.previous=a;
+        this.previous = a;
     }
-    public DSAGraphNode getPrevious(){
 
-       return this.previous;
+    public DSAGraphNode getPrevious() {
+
+        return this.previous;
     }
-    public Object getValue() {
+
+    public naturalElements getValue() {
         return this.value;
-    } 
+    }
 
     public DSALinkedListNode getAdjacent() {
         return this.links;

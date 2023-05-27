@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class DSAHeap {
-    private class DSAHeapEntry {
-        private int priority;
-        private Object value;
+    public class DSAHeapEntry {
+        public int priority;
+        public Object value;
 
         public DSAHeapEntry(int priority, Object value) {
             this.priority = priority;
@@ -15,8 +15,8 @@ public class DSAHeap {
         }
     }
 
-    private DSAHeapEntry[] heap;
-    private int count;
+    public DSAHeapEntry[] heap;
+    public int count;
 
     public DSAHeap(int maxSize) {
         heap = new DSAHeapEntry[maxSize];
@@ -24,6 +24,7 @@ public class DSAHeap {
     }
 
     public void add(int priority, Object value) {
+        // System.out.println("Adding to heap");
         heap[count] = new DSAHeapEntry(priority, value);
         trickleUp(count);
         count++;
@@ -83,7 +84,7 @@ public class DSAHeap {
         return heap;
     }
 
-    private void trickleUp(int index) {
+    public void trickleUp(int index) {
         int parentIndex = getParentIndex(index);
         DSAHeapEntry temp;
 
@@ -98,7 +99,7 @@ public class DSAHeap {
         }
     }
 
-    private void trickleDown(int index) {
+    public void trickleDown(int index) {
         int leftChildIndex = getLeftChildIndex(index);
         int rightChildIndex = getRightChildIndex(index);
         int largestChildIndex;
@@ -124,15 +125,15 @@ public class DSAHeap {
         }
     }
 
-    private int getLeftChildIndex(int index) {
+    public int getLeftChildIndex(int index) {
         return (index * 2) + 1;
     }
 
-    private int getRightChildIndex(int index) {
+    public int getRightChildIndex(int index) {
         return (index * 2) + 2;
     }
 
-    private int getParentIndex(int index) {
+    public int getParentIndex(int index) {
         return (index - 1) / 2;
     }
 }

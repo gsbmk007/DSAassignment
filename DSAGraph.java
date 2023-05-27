@@ -24,7 +24,7 @@ public class DSAGraph {
         }
     }
 
-    public void insertNode(String label, Object value) throws Exception {
+    public void insertNode(String label, naturalElements value) throws Exception {
 
         DSAGraphNode node = new DSAGraphNode(label, value);
         vertices.insertLast(node);
@@ -327,5 +327,5 @@ public class DSAGraph {
 
 
     }
-
+ 
 }
