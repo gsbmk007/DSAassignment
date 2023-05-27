@@ -90,9 +90,23 @@ public class TestHarness {
 
             UAVdataReader.close();
             String node;
-
+            System.out.println("Getting edges");
+            graph.getEdge();
             System.out.println(hashTable.get("A"));
+            System.out.println("Getting sp");
+            DSAStack stack = new DSAStack();
 
+            stack=graph.shortestPathBFS("A", "I");
+
+                // stack.display();
+
+          
+       
+            System.out.println("done dequing ");
+
+            while(!stack.isEmpty()){
+            System.out.println( stack.pop().toString());
+            }
             while (true) {
 
                 System.out.println("Choose Option with number");
@@ -139,7 +153,7 @@ public class TestHarness {
                         // Find the shortest path from node A to node F usin2g DFS
                         try {
                             if (graph.getNode(node) != null) {
-                                path = graph.getShortestPath(node, end, DFSqueue);
+                                // path = graph.getShortestPath(node, end, DFSqueue);
 
                                 boolean reached = false;
 
@@ -196,8 +210,7 @@ public class TestHarness {
                         long endTime = System.nanoTime();
                         long elapsedTime = endTime - startTime;
 
-                        System.out.println("Time Taken to find node using Array : " + elapsedTime + " " + endTime + " "
-                                + startTime + "");
+                        System.out.println("Time Taken to find node using Array : " + elapsedTime);
 
                         break;
                     case 5:
@@ -208,8 +221,7 @@ public class TestHarness {
                         System.out.println("Location: " + node + " " + hashTable.get(node).toString());
                         endTime = System.nanoTime();
                         elapsedTime = endTime - startTime;
-                        System.out.println("Time Taken to find node using Hash : " + elapsedTime + " " + endTime + " "
-                                + startTime + "");
+                        System.out.println("Time Taken to find node using Hash : " + elapsedTime);
 
                         // test code
                     default:

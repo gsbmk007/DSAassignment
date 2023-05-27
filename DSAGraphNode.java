@@ -3,6 +3,7 @@ public class DSAGraphNode {
     private Object value;
     private DSALinkedListNode links;
     private boolean visited;
+    private DSAGraphNode previous;
 
     public DSAGraphNode(String inLabel) {
         this.label = inLabel;
@@ -30,6 +31,14 @@ public class DSAGraphNode {
         
     }
 
+    public void setPrevious(DSAGraphNode a){
+
+        this.previous=a;
+    }
+    public DSAGraphNode getPrevious(){
+
+       return this.previous;
+    }
     public Object getValue() {
         return this.value;
     } 
