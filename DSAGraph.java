@@ -40,6 +40,7 @@ public class DSAGraph {
             node1.addEdge(node2);
             node2.addEdge(node1);
             edges.insertFirst(edge);
+            System.out.println("Added Edge "+edgeLabel+" "+edgeValue);
         }
 
     }

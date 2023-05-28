@@ -15,7 +15,7 @@ public class TestHarness {
         DSAGraphNode currentNode = new DSAGraphNode(null);
         DSAHashTable hashTable = new DSAHashTable(1000);
         String os = System.getProperty("os.name");
-        DSAHeap heap = new DSAHeap(1000); // No need to specify initial size
+        DSAHeap heap = new DSAHeap(100); // No need to specify initial size
         // Object [][]array=new Object[11][2];
         // int i=0;
         Scanner scanner = new Scanner(System.in);
@@ -143,11 +143,27 @@ public class TestHarness {
                 }
                 switch (option) {
                     case 2:
+                    String[] adjnodes;
+                    String[] Weights;
                         System.out.println("Enter Node to add");
                         node = scanner.next();
                         System.out.println("Enter Value for node " + node);
                         if (!graph.hasNode(node)) {
+                            System.out.println("Enter Adjacent Nodes");
+                         adjnodes= scanner.next().split(",");
+                         System.out.println("Enter their Weights");
+                         Weights=scanner.next().split(",");
 
+                            for(int i=0;i<adjnodes.length;i++){
+                            while(!graph.hasNode(adjnodes[i])){
+                                System.out.println("Node:"+adjnodes[i]+"Doesnot  exists");
+                                System.out.println("Enter Nodes That are in the graph in CSV Format ");
+                                adjnodes= scanner.next().split(",");
+                                System.out.println("Enter their Weights");
+                                Weights=scanner.next().split(",");
+                            }
+                            
+                            }
                             System.out.println("Enter Values for");
                             System.out.println("Temperature: ");
                             int temperature = scanner.nextInt();
@@ -193,6 +209,10 @@ public class TestHarness {
                             if (graph.addNode(node)) {
                                 System.out.println("Node Added Successfully ");
                                 graph.getNode(node).setValue(value);
+                                for(int i=0;i<adjnodes.length;i++){
+
+graph.addEdge(node, adjnodes[i], node.concat("").concat(adjnodes[i]),Double.parseDouble(Weights[i]));                                    
+                                }
                                 hashTable.put(node, value);
                                 heap.add(value.riskInteger(), value);
                                 elements[lineCount] = value;
@@ -380,11 +400,11 @@ public class TestHarness {
 
                     case 9:
                         System.out.println("BEst Path between Nodes Using Dijkstra's Algorithm");
-                        DijkstraAlgorithm.dijkstra(graph, "A", "J");
+                        DijkstraAlgorithm.dijkstra(graph, "A", "M");
 
                     default:
 
-                        break;
+                        break; 
                 }
             }
             // Task 3 searn inser and delte
