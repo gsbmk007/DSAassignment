@@ -2,25 +2,22 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class TestHarness {
     public static void main(String[] args) {
+
         DSAGraph graph = new DSAGraph();
-        DSAShufflingQueue DFSqueue = new DSAShufflingQueue();
-        DSAShufflingQueue BFSqueue = new DSAShufflingQueue();
-        DSAShufflingQueue path = new DSAShufflingQueue();
+        // DSAShufflingQueue DFSqueue = new DSAShufflingQueue();
+        // DSAShufflingQueue BFSqueue = new DSAShufflingQueue();
+        // DSAShufflingQueue path = new DSAShufflingQueue();
         DSAGraphNode currentNode = new DSAGraphNode(null);
         DSAHashTable hashTable = new DSAHashTable(1000);
         String os = System.getProperty("os.name");
         DSAHeap heap = new DSAHeap(1000); // No need to specify initial size
         // Object [][]array=new Object[11][2];
         // int i=0;
-
-
-
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -32,10 +29,9 @@ public class TestHarness {
             BufferedReader locationDataReader = new BufferedReader(new FileReader(locationDataFile));
 
             String line;
-            int lineCount = (int) Files.lines(filePath).count();
             naturalElements[] elements = new naturalElements[100];
 
-            lineCount = 0;
+            int lineCount = 0;
             // Read the CSV file line by line
             while ((line = locationDataReader.readLine()) != null) {
                 String[] values = line.split(" ");
@@ -87,19 +83,20 @@ public class TestHarness {
                 // Set the data as the value of the corresponding graph node
                 graph.getNode(values[0]).setValue(data);
 
-                    heap.add(data.riskInteger(), data);
+                heap.add(data.riskInteger(), data);
                 hashTable.put(values[0], data);
                 // array[i][0]=data.riskInteger();
                 // i++;
                 // array[i][1]=data;
-                // System.out.println("   " + hashTable.get(values[0]).toString());
+                // System.out.println(" " + hashTable.get(values[0]).toString());
                 elements[lineCount] = data;
                 lineCount++;
             }
 
+            // graph.getNode("A").getAdjacent().iterator()
+
             // i=0;
-     
-            
+
             UAVdataReader.close();
             String node;
             // System.out.println("Getting edges");
@@ -112,26 +109,38 @@ public class TestHarness {
             // stack.display();
 
             // System.out.println("done dequing ");
-      
+
             // System.out.println("added Data to heap");
-
-
 
             while (true) {
 
                 System.out.println("\nChoose Option with number");
                 System.out.println("\nTask 2\n1.Find shortest path Between Nodes using BFS\n");
-                System.out.println("9. See Output of DFS");
-
                 System.out.println("Task3\n\n2.Insert node");
                 System.out.println("3.Delete Node ");
                 System.out.println("4.Find Node stats from array");
                 System.out.println("5.Find Node stats with Hashing");
                 System.out.println("6. Display Heap in order of Low-High risk places");
-                System.out.println("7. Itenary");
-
+                System.out.println("7. Add Data Using New Data.txt File");
+                System.out.println("8.Show Itenary Using DFS -> Explore All nodes");
+                System.out.println("9.Get Best Path between nodes Using Dijkstra Algorithm");
 
                 int option = scanner.nextInt();
+                try {
+                    // String os = System.getProperty("os.name");
+
+                    if (os.contains("Windows")) {
+                        // Clear screen for Windows
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    } else {
+                        // Clear screen for linux
+                        System.out.print("\033[H\033[2J");
+                        System.out.flush();
+                    }
+                } catch (final Exception e) {
+                    // Handle any exceptions that may occur
+                    e.printStackTrace();
+                }
                 switch (option) {
                     case 2:
                         System.out.println("Enter Node to add");
@@ -143,42 +152,42 @@ public class TestHarness {
                             System.out.println("Temperature: ");
                             int temperature = scanner.nextInt();
 
-                            boolean valueok=false;
-                            if(temperature>=25&&temperature<=48)
-                                valueok=true;
+                            boolean valueok = false;
+                            if (temperature >= 25 && temperature <= 48)
+                                valueok = true;
 
-                            while(!valueok){
-                            System.out.println("Enter a Valid Temp between 25-48");
-                             temperature = scanner.nextInt();
-                             if(temperature>=25&&temperature<=48)
-                                valueok=true;
+                            while (!valueok) {
+                                System.out.println("Enter a Valid Temp between 25-48");
+                                temperature = scanner.nextInt();
+                                if (temperature >= 25 && temperature <= 48)
+                                    valueok = true;
 
                             }
 
-                            valueok=false;
+                            valueok = false;
                             System.out.println("Humidity: ");
                             int Humidity = scanner.nextInt();
-                            if(Humidity>=15&&Humidity<=60)
-                            valueok=true;
-                            while(!valueok){
+                            if (Humidity >= 15 && Humidity <= 60)
+                                valueok = true;
+                            while (!valueok) {
                                 System.out.println("Enter a Valid Humidity between 15-60");
                                 Humidity = scanner.nextInt();
-                                 if(Humidity>=15&&Humidity<=60)
-                                    valueok=true;
-    
-                                }
-                                valueok=false;
+                                if (Humidity >= 15 && Humidity <= 60)
+                                    valueok = true;
+
+                            }
+                            valueok = false;
                             System.out.println("WindSpeed: ");
                             int WindSpeed = scanner.nextInt();
-                            if(WindSpeed>=30&&WindSpeed<=100)
-                            valueok=true;
-                            while(!valueok){
+                            if (WindSpeed >= 30 && WindSpeed <= 100)
+                                valueok = true;
+                            while (!valueok) {
                                 System.out.println("Enter a Valid WindSpeed between 30-100");
                                 WindSpeed = scanner.nextInt();
-                                 if(WindSpeed>=30&&WindSpeed<=100)
-                                    valueok=true;
-    
-                                }
+                                if (WindSpeed >= 30 && WindSpeed <= 100)
+                                    valueok = true;
+
+                            }
                             naturalElements value = new naturalElements(node, temperature, Humidity, WindSpeed);
 
                             if (graph.addNode(node)) {
@@ -186,7 +195,7 @@ public class TestHarness {
                                 graph.getNode(node).setValue(value);
                                 hashTable.put(node, value);
                                 heap.add(value.riskInteger(), value);
-                                elements[lineCount]=value;
+                                elements[lineCount] = value;
                                 lineCount++;
                             }
                             graph.displayAsList();
@@ -194,8 +203,10 @@ public class TestHarness {
                         } else {
                             System.out.println("Enter a node that does not exist ");
                         }
-
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
                         break;
+
                     case 1:
 
                         System.out.println("Enter the Node to be found");
@@ -228,7 +239,8 @@ public class TestHarness {
                             } else {
                                 System.out.println("Cannot find " + node + "Try again ");
                             }
-
+                            System.out.println("Press Any Key to Continue");
+                            scanner.next();
                         } catch (Exception e) {
                             // TODO: handle exception
                         }
@@ -250,8 +262,10 @@ public class TestHarness {
                         try {
                             hashTable.get(node).toString();
                         } catch (Exception e) {
-    
+
                         }
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
                         break;
                     case 4:
                         System.out.println("Enter the Node to Be Found  ");
@@ -275,6 +289,8 @@ public class TestHarness {
 
                         System.out.println("Time Taken to find node using Array : " + elapsedTime);
 
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
                         break;
                     case 5:
                         System.out.println("Finding node using hash");
@@ -287,11 +303,12 @@ public class TestHarness {
                         System.out.println("Time Taken to find node using Hash : " + elapsedTime);
 
                         // test code
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
                         break;
                     case 6:
                         System.out.println("Display heal");
                         Object[][] input = new Object[heap.getCount()][2];
-
 
                         for (int i = 0; i < heap.getCount(); i++) {
                             input[i][0] = heap.heap[i].priority;
@@ -302,11 +319,71 @@ public class TestHarness {
                             naturalElements element = (naturalElements) entry.value;
                             System.out.println(element.toString());
                         }
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
                         break;
 
                     case 7:
-                        System.out.println("Itenary ");
+                        System.out.println("Upload new Uav Data ");
+                        UAVdataReader = new BufferedReader(new FileReader("New Data.txt"));
+                        while ((dataLine = UAVdataReader.readLine()) != null) {
+                            String[] values = dataLine.split(" ");
+
+                            // Parse temperature, humidity, and wind speed values
+                            int temperature = Integer.parseInt(values[1]);
+                            int humidity = Integer.parseInt(values[2]);
+                            int windSpeed = Integer.parseInt(values[3]);
+                            if (!graph.hasNode(values[0])) {
+                                if ((temperature >= 25 && temperature <= 48) && (humidity >= 15 && humidity <= 60)
+                                        && (windSpeed >= 30 && windSpeed <= 100)) {
+
+                                    // Create naturalElements object with the data
+                                    naturalElements data = new naturalElements(values[0], temperature, humidity,
+                                            windSpeed);
+                                    // System.out.println(values[0]+":"+data.toString());
+                                    // Set the data as the value of the corresponding graph node
+                                    graph.addNode(values[0]);
+                                    graph.getNode(values[0]).setValue(data);
+
+                                    heap.add(data.riskInteger(), data);
+                                    hashTable.put(values[0], data);
+                                    // array[i][0]=data.riskInteger();
+                                    // i++;
+                                    // array[i][1]=data;
+                                    // System.out.println(" " + hashTable.get(values[0]).toString());
+                                    elements[lineCount] = data;
+                                    lineCount++;
+                                } else {
+                                    System.out.println("Skipping Data Fro Node" + values[0]);
+
+                                }
+                            }
+                        }
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
+                        break;
+
+                    case 8:
+                        System.out.println("Itenary Using DFS ");
+
+                        DSAStack dfsStack = graph.depthFirstSearch("I");
+                        System.out.print("DFS Traversal: ");
+                        while (!dfsStack.isEmpty()) {
+                            DSAGraphNode GraphNode = (DSAGraphNode) dfsStack.pop();
+                            System.out.print(GraphNode.getLabel() + " -> ");
+                        }
+                        System.out.println("END");
+
+                        System.out.println("Press Any Key to Continue");
+                        scanner.next();
+                        break;
+
+                    case 9:
+                        System.out.println("BEst Path between Nodes Using Dijkstra's Algorithm");
+                        DijkstraAlgorithm.dijkstra(graph, "A", "J");
+
                     default:
+
                         break;
                 }
             }

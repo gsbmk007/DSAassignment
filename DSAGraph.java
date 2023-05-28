@@ -6,8 +6,8 @@ import javax.swing.text.html.parser.Element;
 import java.lang.String;
 
 public class DSAGraph {
-    private DSALinkedListNode vertices;
-    private DSALinkedListEdge edges;
+    public DSALinkedListNode vertices;
+    public DSALinkedListEdge edges;
 
     public DSAGraph() {
         this.vertices = new DSALinkedListNode();
@@ -44,12 +44,12 @@ public class DSAGraph {
 
     }
 
-    public void getEdge(){
+    public void getEdge() {
 
-        Iterator<DSAGraphEdge>iter = edges.iterator();
-        while(iter.hasNext()){
-            DSAGraphEdge edge= (DSAGraphEdge) iter.next();
-            System.out.println(edge.getLabel()+" "+edge.getValue());
+        Iterator<DSAGraphEdge> iter = edges.iterator();
+        while (iter.hasNext()) {
+            DSAGraphEdge edge = (DSAGraphEdge) iter.next();
+            System.out.println(edge.getLabel() + " " + edge.getValue());
         }
 
     }
@@ -106,7 +106,7 @@ public class DSAGraph {
         return false;
     }
 
-    private int getNodeIndex(String label) {
+    public int getNodeIndex(String label) {
         Iterator<DSAGraphNode> iter = vertices.iterator();
         int index = 0;
         while (iter.hasNext()) {
@@ -118,7 +118,24 @@ public class DSAGraph {
         }
         return -1;
     }
-
+    public DSAGraphNode getNodeAtIndex(int index) {
+        if (index < 0 || index >= vertices.getCount()) {
+            return null;
+        }
+    
+        Iterator<DSAGraphNode> iter = vertices.iterator();
+        int currentIndex = 0;
+    
+        while (iter.hasNext()) {
+            DSAGraphNode node = iter.next();
+            if (currentIndex == index) {
+                return node;
+            }
+            currentIndex++;
+        }
+    
+        return null;
+    }
     public void displayAsList() {
         Iterator<DSAGraphNode> iter = vertices.iterator();
         while (iter.hasNext()) {
@@ -256,39 +273,77 @@ public class DSAGraph {
         return value;
     }
 
-    public DSAStack shortestPathBFS(String startNodeLabel, String endNodeLabel) throws Exception {
+    public DSAStack depthFirstSearch(String startNodeLabel) throws Exception {
         DSAGraphNode startNode = getNode(startNodeLabel);
-        DSAGraphNode endNode = getNode(endNodeLabel);
-    
-        if (startNode == null || endNode == null) {
-            System.out.println("One or both nodes not found in the graph.");
+
+        if (startNode == null) {
+            System.out.println("Start node not found.");
             return null;
         }
-    
+
+        DSAStack dfsStack = new DSAStack();
+
         // Initialize visited flag for all nodes
         Iterator<DSAGraphNode> nodeIter = vertices.iterator();
         while (nodeIter.hasNext()) {
             DSAGraphNode node = nodeIter.next();
             node.clearVisited();
         }
-    
+
+        dfsRecursive(startNode, dfsStack);
+
+        return dfsStack;
+    }
+
+    public void dfsRecursive(DSAGraphNode currentNode, DSAStack dfsStack) {
+        currentNode.setVisited();
+        dfsStack.push(currentNode);
+
+        DSALinkedListNode adjacent = currentNode.getAdjacent();
+        if (adjacent != null) {
+            Iterator<DSAGraphNode> iter = adjacent.iterator();
+            while (iter.hasNext()) {
+                DSAGraphNode adjNode = iter.next();
+                if (!adjNode.getVisited()) {
+                    dfsRecursive(adjNode, dfsStack);
+                }
+            }
+        }
+    }
+
+    public DSAStack shortestPathBFS(String startNodeLabel, String endNodeLabel) throws Exception {
+        DSAGraphNode startNode = getNode(startNodeLabel);
+        DSAGraphNode endNode = getNode(endNodeLabel);
+
+        if (startNode == null || endNode == null) {
+            System.out.println("One or both nodes not found in the graph.");
+            return null;
+        }
+
+        // Initialize visited flag for all nodes
+        Iterator<DSAGraphNode> nodeIter = vertices.iterator();
+        while (nodeIter.hasNext()) {
+            DSAGraphNode node = nodeIter.next();
+            node.clearVisited();
+        }
+
         DSAStack shortestPathStack = new DSAStack();
-    
+
         DSAGraphNode[] queue = new DSAGraphNode[getNodeCount()];
         int front = 0;
         int rear = 0;
-    
+
         startNode.setVisited();
         queue[rear++] = startNode;
-    
+
         while (front != rear) {
             DSAGraphNode currentNode = queue[front++];
-    
+
             if (currentNode.equals(endNode)) {
                 // Shortest path found, construct and return the path queue
                 return constructPathQueue(startNode, endNode, shortestPathStack);
             }
-    
+
             DSALinkedListNode adjacent = currentNode.getAdjacent();
             if (adjacent != null) {
                 Iterator<DSAGraphNode> iter = adjacent.iterator();
@@ -302,30 +357,30 @@ public class DSAGraph {
                 }
             }
         }
-    
+
         // No path found between the given nodes
         System.out.println("No path found between the given nodes.");
         return null;
     }
-    
-    private DSAStack constructPathQueue(DSAGraphNode startNode, DSAGraphNode endNode, DSAStack pathStack) throws Exception {
+
+    public DSAStack constructPathQueue(DSAGraphNode startNode, DSAGraphNode endNode, DSAStack pathStack)
+            throws Exception {
         DSAGraphNode currNode = endNode;
-    
+
         while (currNode != null) {
             pathStack.push(currNode);
             System.out.println(currNode.toString());
             currNode = currNode.getPrevious();
         }
-    
+
         // Reverse the queue to obtain the path in the correct order
-  
-       
+
         return pathStack;
     }
-     public void removeNode(String value) throws Exception {
+
+    public void removeNode(String value) throws Exception {
         vertices.removeNode(getNode(value));
 
-
     }
- 
+
 }
